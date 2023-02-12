@@ -1,0 +1,12 @@
+001,Dracula,007,Bram Stokker,1897
+002,Harry Potter - D.S.d.W.,007,J.K.Rowling,1997
+003,Harry Potter 2,007,J.K.Rowling,1998
+004,Harry Potter 3,007,J.K.Rowling,1999
+005,Harry Potter 4,007,J.K.Rowling,2000
+006,Ostfriesen Gier,018,Klaus-Peter Wolf,2023
+007,Tschick,007,Wolfgang Herrndorf,2012
+008,Mimik,010,Sebastian Fitzek,2022
+009,Nudeln auf Knopfdruck,051,Cam Tu Nguyen,2021
+010,Die Leiden d.j.W.,001,J.W.v.Goethe,1774
+011,Schwarzindien,003,Jules Verne,1882
+012,Mickey Mouse,004,Walt Disney,1942
