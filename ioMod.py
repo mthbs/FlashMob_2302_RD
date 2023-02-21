@@ -12,7 +12,7 @@ def fopen(fpath, mode):
     return file
 
 if __name__ == '__main__':
-    fpath = "./data/bookDB/booklist.txt"
+    fpath = "./data/bookDB/booklist.csv"
     try:
         file = open(fpath,"r")
     except:

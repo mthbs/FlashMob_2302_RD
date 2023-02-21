@@ -1,5 +1,8 @@
+
+import os
 import ioMod as io
 import editMod as ed
+import pickle
 
 
 PINK = '\033[95m'
@@ -25,10 +28,10 @@ class List:
 
     # Destructor
     def __del__(self):
-        if self.changed:
-            answer = input("Save your changes? y/n: ")
-            if answer == "y":
-                self.save_list()
+        pass
+
+    def get_changed_status(self):
+        return self.changed
 
     def modify_sublist(self, mod_no, prompts, allowed_symbols_tpl):
         # Creating a new Sublist
@@ -71,12 +74,12 @@ class List:
             self.list.append(sublist)
             self.changed = True
 
-    def print_list(self, format_tpl, headers):
+    def print_list(self, format_tpl, show_tpl, headers):
         formatStr = ""
-        for index, header in enumerate(headers):
-            if format_tpl[index] == 0:
+        for x in range(len(show_tpl)):
+            if format_tpl[x] == 0:
                 continue
-            formatStr += f"{header:{format_tpl[index]}}"
+            formatStr += f"{headers[show_tpl[x]]:{format_tpl[show_tpl[x]]}}"
         print(formatStr)
         # draw line after header line
         sum = 0
@@ -88,27 +91,39 @@ class List:
 
         for sublist in self.list:
             formatStr = f""
-            for index, item in enumerate(sublist):
-                if format_tpl[index] == 0:
+            for x in range(len(show_tpl)):
+                if format_tpl[x] == 0:
                     continue
-                if index == 2:
-                    formatStr += f"{GREEN}"
-                item = item[:format_tpl[index]-1]
-                formatStr += f"{item:{format_tpl[index]}}"
-                formatStr += f"{ENDC}"
+                item = sublist[show_tpl[x]][:format_tpl[show_tpl[x]]-1]
+                formatStr += f"{item:{format_tpl[show_tpl[x]]}}"
             print(formatStr)
 
-    def load_list(self):
-        file = io.fopen(self.fpath,"r")
+    def import_list(self):
+        self.list = []
+        filename, file_extension = os.path.splitext(self.fpath)
+        filename += ".csv"
+        print(f"{filename} successful imported")
+        file = io.fopen(filename, "r")
         if file:
             for line in file:
                 line = line[:-1]
-                sublist = line.split(sep=",")
+                sublist = line.split(",")
                 self.list.append(sublist)
             file.close()
 
-    def save_list(self):
-        file = io.fopen(self.fpath, "w")
+    def load_list(self):
+        try:
+            file = io.fopen(self.fpath, "rb")
+            self.list = pickle.load(file)
+            file.close()
+        except:
+            self.list = []
+
+    def export2csv_list(self):
+        filename, file_extension = os.path.splitext(self.fpath)
+        filename += ".csv"
+        print("filename:", filename)
+        file = io.fopen(filename, "w")
         for sublist in self.list:
             formatStr = f""
             for item in sublist:
@@ -117,6 +132,13 @@ class List:
             file.write(formatStr)
         file.close()
         self.changed = False
+
+    def save_list(self):
+        file = io.fopen(self.fpath, "wb")
+        pickle.dump(self.list, file)
+        file.close()
+        self.changed = False
+
 
     def del_sublist(self,del_no):
         deleted_sublist = False
